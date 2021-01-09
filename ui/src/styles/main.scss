@@ -1,0 +1,17 @@
+.siteLayoutContent {
+  min-height: 280px;
+  padding: 24px;
+  background: #fff;
+}
+
+.ant-row-rtl .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
+[data-theme='dark'] .siteLayoutContent {
+  background: #141414;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

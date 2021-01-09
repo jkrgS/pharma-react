@@ -1,0 +1,34 @@
+{
+  "name": "pharma-react",
+  "version": "1.0.0",
+  "description": "react project",
+  "main": "index.js",
+  "repository": "git@github.com:jkrgS/pharma-react.git",
+  "author": "jkrgS <siskogeorge@gmail.com>",
+  "license": "MIT",
+  "private": "true",
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "ui-install-deps": "yarn workspace ui install-deps",
+    "ui-start": "yarn workspace ui start",
+    "ui-prettier-fix": "yarn workspace ui prettier:fix",
+    "ui-prettier-format": "yarn workspace ui prettier:format"
+  },
+  "devDependencies": {
+    "husky": "^4.3.5",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1"
+  },
+  "lint-staged": {
+    "**/*.+(js|jsx|json|css|md)": [
+      "yarn format"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
