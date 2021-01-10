@@ -1,0 +1,3 @@
+export const TERM_DATA_SUCCESS = 'TERM_DATA_SUCCESS';
+export const TERM_DATA_FAIL = 'TERM_DATA_FAIL';
+export const TERM_DATA_FETCH = 'TERM_DATA_FETCH';

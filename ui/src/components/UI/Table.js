@@ -1,11 +1,13 @@
-import '../../App.scss';
-// import logo from '../../logo.svg';
-import { getTerms } from '../../services/terms';
 import React, { useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
-// import './index.css';
-import { Table, Switch, Tooltip } from 'antd';
+import { Table, Switch, Tooltip, Pagination } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
+import { _tables } from '../../models/interfaces/ITables';
+import BarChart from '../../components/UI/BarChart';
+import { Divider } from 'antd';
+import PropTypes from 'prop-types';
 
 const columns = [
   {
@@ -44,40 +46,59 @@ const columns = [
   },
 ];
 
-const DataTable = () => {
-  const [dataSource, setDataSource] = useState([]);
-  const [page] = useState(1);
+const DataTable = ({ onFetchTerms, terms, total_elements, loading }) => {
+  const [pagination, setPagination] = useState({
+    current: 1,
+    size: 10,
+  });
 
   useEffect(() => {
-    getTerms(page)
-      .then(({ data }) => {
-        setDataSource(
-          data._embedded.terms.map((term) => {
-            return {
-              key: term.obo_id,
-              label: term.label,
-              synonyms: term.synonyms ? term.synonyms.join(', ') : '-',
-              obo_id: term.obo_id,
-              term_editor: term.annotation['term editor']
-                ? term.annotation['term editor'].join(', ')
-                : '-',
-              has_children: term.has_children,
-            };
-          })
-        );
-      })
-      .catch((e) => console.log(e));
-  }, [page]);
+    onFetchTerms(pagination);
+  }, [onFetchTerms, pagination]);
 
   return (
     <div className="App">
       <Table
         columns={columns}
-        dataSource={dataSource}
-        loading={!dataSource.length}
+        dataSource={terms}
+        loading={loading}
+        pagination={false}
       />
+      <Pagination
+        className="tablePaginator"
+        current={pagination.current}
+        total={total_elements || 0}
+        disabled={loading}
+        onChange={(page, pageSize) =>
+          setPagination({ current: page, size: pageSize })
+        }
+      />
+      <Divider className="pageDivider" />
+      <BarChart title="Word label frequency" />
     </div>
   );
 };
 
-export default DataTable;
+DataTable.propTypes = {
+  onFetchTerms: PropTypes.func,
+  terms: PropTypes.array.isRequired,
+  total_elements: PropTypes.number,
+  loading: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    terms: state.term.terms,
+    total_elements: state.term.total_elements,
+    loading: state.term.loading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchTerms: (page = _tables.page) =>
+      dispatch(actions.fetchTermData(page)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataTable);
