@@ -9,6 +9,7 @@ import BarChart from '../../components/UI/BarChart';
 import { Divider } from 'antd';
 import PropTypes from 'prop-types';
 
+// set the columns of the table
 const columns = [
   {
     title: 'Name',
@@ -29,6 +30,7 @@ const columns = [
   {
     title: 'Children',
     dataIndex: 'has_children',
+    // set a switcher \disabled/
     render: (has_children) => (
       <Tooltip
         title={

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
 import { BugOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 const { Header, Content, Footer } = Layout;
 
 const LayoutNav = ({ children }) => {
+  // get the route location without special characters for breadcrumb usage
   const location = useLocation().pathname.split('/');
 
   return (
@@ -26,6 +27,7 @@ const LayoutNav = ({ children }) => {
   );
 };
 
+// local styling
 const styles = {
   headerContainer: {
     display: 'flex',
