@@ -8,14 +8,18 @@ const BarChart = ({ terms, loading, title }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
-    const dt = terms.map((term) => term.label).join(' ');
-    const separation = dt.split(' ');
+    // get labels separated
+    const labels = terms.map((term) => term.label).join(' ');
+    // word separation in an array
+    const separation = labels.split(' ');
     const counts = {};
     const data = [];
+    // get words and the repetition count as a key value pair
     for (let i = 0; i < separation.length; i++) {
       counts[separation[i]] = 1 + (counts[separation[i]] || 0);
     }
 
+    // prepare chart data source
     for (const term in counts) {
       data.push({ name: term, y: counts[term] });
     }
@@ -23,6 +27,7 @@ const BarChart = ({ terms, loading, title }) => {
     setChartData(data);
   }, [terms]);
 
+  // chart options
   const options = {
     chart: {
       type: 'bar',
