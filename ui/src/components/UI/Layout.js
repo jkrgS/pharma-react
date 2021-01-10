@@ -1,7 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Breadcrumb } from 'antd';
 import 'antd/dist/antd.css';
-import '../../styles/main.scss';
 import { BugOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 
@@ -12,13 +11,9 @@ const LayoutNav = ({ children }) => {
 
   return (
     <Layout className="layout">
-      <Header>
+      <Header style={styles.headerContainer}>
         <BugOutlined style={styles.logo} />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          {/* <Menu.Item key="1">nav 1</Menu.Item>
-          <Menu.Item key="2">nav 2</Menu.Item>
-          <Menu.Item key="3">nav 3</Menu.Item> */}
-        </Menu>
+        <span style={styles.appName}>Pharma</span>
       </Header>
       <Content style={{ padding: '0 50px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>
@@ -32,9 +27,19 @@ const LayoutNav = ({ children }) => {
 };
 
 const styles = {
+  headerContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   logo: {
     color: '#FDF9F8',
-    fontSize: 23,
+    fontSize: 29,
+  },
+  appName: {
+    color: '#FDF9F8',
+    marginLeft: '9px',
+    fontSize: '19px',
   },
 };
 
