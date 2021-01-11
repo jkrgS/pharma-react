@@ -16,6 +16,7 @@ const termDataSuccess = (state, action) => {
     terms: action.termsData,
     total_elements: action.total_elements,
     loading: false,
+    columns: action.columns,
   });
 };
 
