@@ -35,5 +35,5 @@ sudo yarn install
 
 ```javascript
 // from root
-sudo yarn ui-start
+yarn ui-start
 ```
