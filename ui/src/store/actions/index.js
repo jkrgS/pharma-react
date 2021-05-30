@@ -1,1 +1,1 @@
-export { termDataSuccess, termDataFail, fetchTermData } from './term';
+export { termDataSuccess, termDataFail, fetchTermData } from "./term";

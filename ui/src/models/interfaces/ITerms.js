@@ -1,8 +1,8 @@
 export const _term = {
-  key: '',
-  label: '',
+  key: "",
+  label: "",
   synonyms: [],
-  obo_id: '',
+  obo_id: "",
   term_editor: [],
   has_children: false,
 };

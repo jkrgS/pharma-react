@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import 'antd/dist/antd.css';
-import { Table, Pagination } from 'antd';
-import { connect } from 'react-redux';
-import * as actions from '../../store/actions/index';
-import { _tables } from '../../models/interfaces/ITables';
-import BarChart from '../../components/UI/BarChart';
-import { Divider } from 'antd';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import "antd/dist/antd.css";
+import { Table, Pagination } from "antd";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/index";
+import { _tables } from "../../models/interfaces/ITables";
+import BarChart from "../../components/UI/BarChart";
+import { Divider } from "antd";
+import PropTypes from "prop-types";
 
 const DataTable = ({
   onFetchTerms,

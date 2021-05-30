@@ -1,5 +1,5 @@
-import Table from '../components/UI/Table';
-import React from 'react';
+import Table from "../components/UI/Table";
+import React from "react";
 
 const Home = () => {
   return (

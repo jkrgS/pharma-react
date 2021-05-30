@@ -5,6 +5,9 @@ import Layout from './components/UI/Layout';
 const Home = React.lazy(() => {
   return import('./containers/home.js');
 });
+const Auth = React.lazy(() => {
+  return import('./components/UI/Auth');
+});
 
 const app = () => {
   const routes = (
@@ -12,16 +15,23 @@ const app = () => {
       <Route
         path="/home"
         location={{ hash: 'Home' }}
-        render={(props) => <Home {...props} />}
+        render={(props) => (
+          <Layout>
+            <Home {...props} />
+          </Layout>
+        )}
+      />
+      <Route
+        path="/authentication"
+        location={{ hash: 'Auth' }}
+        render={(props) => <Auth {...props} />}
       />
       <Redirect to="/home" />
     </Switch>
   );
   return (
     <div>
-      <Layout>
-        <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
-      </Layout>
+      <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
     </div>
   );
 };
