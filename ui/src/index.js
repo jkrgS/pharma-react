@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import termReducer from './store/reducers/term';
+import authReducer from './store/reducers/auth';
 import ReduxThunk from 'redux-thunk';
 
 const composeEnhancers =
@@ -18,6 +19,7 @@ const composeEnhancers =
 
 const rootReducer = combineReducers({
   term: termReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

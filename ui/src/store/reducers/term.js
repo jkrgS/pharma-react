@@ -1,6 +1,6 @@
-import { _terms } from "../../models/interfaces/ITerms";
-import { updateObject } from "../../shared/utility";
-import * as actionTypes from "../actions/actionTypes";
+import { _terms } from '../../models/interfaces/ITerms';
+import { updateObject } from '../../shared/utility';
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   terms: _terms,
