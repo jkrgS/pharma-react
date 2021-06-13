@@ -6,3 +6,27 @@ export const registerUser = async (user = _user) => {
     ...user,
   });
 };
+
+export const loginUser = async (user = _user) => {
+  return axios.post(`${process.env.REACT_APP_SERVER_DOMAIN}/auth/login`, {
+    ...user,
+  });
+};
+
+export const forgotUser = async (user = _user) => {
+  return axios.post(
+    `${process.env.REACT_APP_SERVER_DOMAIN}/auth/forgot-password`,
+    {
+      ...user,
+    }
+  );
+};
+
+export const resetUser = async (user = _user) => {
+  return axios.post(
+    `${process.env.REACT_APP_SERVER_DOMAIN}/auth/reset-password`,
+    {
+      ...user,
+    }
+  );
+};

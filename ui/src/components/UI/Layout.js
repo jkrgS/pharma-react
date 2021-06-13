@@ -1,24 +1,24 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import BugReportIcon from "@material-ui/icons/BugReport";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import { useLocation } from "react-router-dom";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import { useLocation, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: "15px",
+    padding: '15px',
   },
   navBar: {
-    position: "static",
-    backgroundColor: "#0b99a1",
+    position: 'static',
+    backgroundColor: '#0b99a1',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -30,16 +30,19 @@ const useStyles = makeStyles((theme) => ({
 
 const LayoutNav = ({ children }) => {
   // get the route location without special characters for breadcrumb usage
-  const location = useLocation().pathname.split("/");
+  const location = useLocation().pathname.split('/');
 
   const classes = useStyles();
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const history = useHistory();
 
-  // const handleChange = (event) => {
-  //   setAuth(event.target.checked);
-  // };
+  const handleLogout = (event) => {
+    localStorage.removeItem('token');
+    history.push('/authentication');
+    handleClose();
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,19 +82,18 @@ const LayoutNav = ({ children }) => {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
           )}
@@ -110,7 +112,7 @@ const LayoutNav = ({ children }) => {
 // local styling
 const styles = {
   breadcrumb: {
-    margin: "15px",
+    margin: '15px',
   },
 };
 

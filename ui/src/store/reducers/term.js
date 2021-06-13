@@ -26,6 +26,12 @@ const termDataFail = (state, action) => {
   });
 };
 
+const modalStatus = (state, action) => {
+  return updateObject(state, {
+    modal: { status: action },
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TERM_DATA_FETCH:
@@ -34,6 +40,8 @@ const reducer = (state = initialState, action) => {
       return termDataSuccess(state, action);
     case actionTypes.TERM_DATA_FAIL:
       return termDataFail(state, action);
+    case actionTypes.MODAL_STATUS:
+      return modalStatus(state, action);
     default:
       return state;
   }

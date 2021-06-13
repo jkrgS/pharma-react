@@ -18,12 +18,61 @@ const registerUserFail = (state, action) => {
   });
 };
 
+const loginUserSuccess = (state, action) => {
+  localStorage.setItem('token', action?.data?.jwtToken);
+  return updateObject(state, {
+    auth: { login: { email: action.data.email, token: action.data.jwtToken } },
+  });
+};
+
+const loginUserFail = (state, action) => {
+  return updateObject(state, {
+    auth: { login: { failed: true } },
+  });
+};
+
+const forgotUserSuccess = (state, action) => {
+  return updateObject(state, {
+    auth: { forgot: { message: action.message } },
+  });
+};
+
+const forgotUserFail = (state, action) => {
+  return updateObject(state, {
+    auth: { forgot: { message: action.message, failed: true } },
+  });
+};
+
+const resetUserSuccess = (state, action) => {
+  return updateObject(state, {
+    auth: { reset: { message: action.message } },
+  });
+};
+
+const resetUserFail = (state, action) => {
+  return updateObject(state, {
+    auth: { reset: { message: action.message, failed: true } },
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.REGISTER_USER_SUCCESS:
       return registerUserSuccess(state, action);
     case actionTypes.REGISTER_USER_FAIL:
       return registerUserFail(state, action);
+    case actionTypes.LOGIN_USER_SUCCESS:
+      return loginUserSuccess(state, action);
+    case actionTypes.LOGIN_USER_FAIL:
+      return loginUserFail(state, action);
+    case actionTypes.FORGOT_USER_SUCCESS:
+      return forgotUserSuccess(state, action);
+    case actionTypes.FORGOT_USER_FAIL:
+      return forgotUserFail(state, action);
+    case actionTypes.RESET_USER_SUCCESS:
+      return resetUserSuccess(state, action);
+    case actionTypes.RESET_USER_FAIL:
+      return resetUserFail(state, action);
     default:
       return state;
   }

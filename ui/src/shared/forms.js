@@ -129,4 +129,37 @@ const ForgotFields = ({ onChange }) => (
   />
 );
 
-export const forms = { Copyright, LoginFields, RegisterFields, ForgotFields };
+const ResetFields = ({ onChange }) => (
+  <>
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      name="password"
+      label="Password"
+      type="password"
+      id="password"
+      onChange={(e) => onChange(e)}
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      name="confirm-password"
+      label="Confirm Password"
+      type="password"
+      id="confirmPassword"
+      onChange={(e) => onChange(e)}
+    />
+  </>
+);
+
+export const forms = {
+  Copyright,
+  LoginFields,
+  RegisterFields,
+  ForgotFields,
+  ResetFields,
+};

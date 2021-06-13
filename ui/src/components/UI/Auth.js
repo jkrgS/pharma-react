@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,6 +15,7 @@ import { connect } from 'react-redux';
 import { _user } from '../../models/interfaces/IAuth';
 import * as actions from '../../store/actions/index';
 import { forms } from '../../shared/forms';
+import { useMemo } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,19 +54,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Auth = ({ onRegisterUser, auth }) => {
+const Auth = ({
+  onRegisterUser,
+  onLoginUser,
+  onForgotUser,
+  onResetUser,
+  onReset,
+  auth,
+  ...props
+}) => {
   const classes = useStyles();
-  const form = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    acceptTerms: true,
-    // remember: false,
-  };
+  const history = useHistory();
+  const form = useMemo(
+    () => ({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      token: '',
+      acceptTerms: true,
+      // remember: false,
+    }),
+    []
+  );
   const [authStatus, setAuthStatus] = useState('Sign in');
-  const { Copyright, LoginFields, RegisterFields, ForgotFields } = forms;
+  const { Copyright, LoginFields, RegisterFields, ForgotFields, ResetFields } =
+    forms;
+  const { location } = props;
+  const resetToken = new URLSearchParams(location.search).get('token');
 
   const handleFieldChange = (event) => {
     const id = event.target.id;
@@ -73,9 +91,21 @@ const Auth = ({ onRegisterUser, auth }) => {
     form[id] = value;
   };
 
-  const onConfirmClick = (id) => onRegisterUser({ ...form });
+  const onConfirmClick = () => {
+    authStatus === 'Sign up' && onRegisterUser({ ...form });
+    authStatus === 'Sign in' && onLoginUser({ ...form });
+    authStatus === 'Forgot' && onForgotUser({ ...form });
+    authStatus === 'Reset' && onResetUser({ ...form });
+  };
 
-  // useEffect(() => console.log({ auth }));
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token && !auth?.auth?.forgot) history.push('/home');
+    if (onReset) setAuthStatus('Reset');
+    if (auth?.auth?.reset && !auth?.auth?.reset?.failed)
+      setAuthStatus('Sign in');
+    if (resetToken) form.token = resetToken;
+  }, [auth, form, history, onReset, resetToken]);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -99,6 +129,9 @@ const Auth = ({ onRegisterUser, auth }) => {
             {authStatus === 'Forgot' && (
               <ForgotFields onChange={(e) => handleFieldChange(e)} />
             )}
+            {authStatus === 'Reset' && (
+              <ResetFields onChange={(e) => handleFieldChange(e)} />
+            )}
             <Button
               fullWidth
               variant="contained"
@@ -108,30 +141,36 @@ const Auth = ({ onRegisterUser, auth }) => {
             >
               {authStatus === 'Forgot' ? 'Send email' : authStatus}
             </Button>
-            <Grid container>
-              {authStatus !== 'Forgot' && (
-                <Grid item xs>
-                  <Link onClick={() => setAuthStatus('Forgot')} variant="body2">
-                    Forgot password?
+            {!onReset && (
+              <Grid container>
+                {authStatus !== 'Forgot' && (
+                  <Grid item xs>
+                    <Link
+                      onClick={() => setAuthStatus('Forgot')}
+                      variant="body2"
+                    >
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                )}
+                <Grid item>
+                  <Link
+                    onClick={() =>
+                      setAuthStatus(
+                        authStatus === 'Sign in' ? 'Sign up' : 'Sign in'
+                      )
+                    }
+                    variant="body2"
+                  >
+                    {authStatus === 'Sign in' &&
+                      "Don't have an account? Sign Up"}
+                    {authStatus === 'Sign up' &&
+                      'Have already an account? Sign In'}
+                    {authStatus === 'Forgot' && 'Back to Sign In'}
                   </Link>
                 </Grid>
-              )}
-              <Grid item>
-                <Link
-                  onClick={() =>
-                    setAuthStatus(
-                      authStatus === 'Sign in' ? 'Sign up' : 'Sign in'
-                    )
-                  }
-                  variant="body2"
-                >
-                  {authStatus === 'Sign in' && "Don't have an account? Sign Up"}
-                  {authStatus === 'Sign up' &&
-                    'Have already an account? Sign In'}
-                  {authStatus === 'Forgot' && 'Back to Sign In'}
-                </Link>
               </Grid>
-            </Grid>
+            )}
             <Box mt={5}>
               <Copyright />
             </Box>
@@ -151,6 +190,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onRegisterUser: (user = _user) => dispatch(actions.registerUser(user)),
+    onLoginUser: (user = _user) => dispatch(actions.loginUser(user)),
+    onForgotUser: (user = _user) => dispatch(actions.forgotUser(user)),
+    onResetUser: (user = _user) => dispatch(actions.resetUser(user)),
   };
 };
 
