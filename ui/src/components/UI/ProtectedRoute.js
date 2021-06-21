@@ -12,14 +12,16 @@ const ProtectedRoute = ({ component: Component, ...restOfProps }) => {
   return (
     <Route
       {...restOfProps}
-      render={(props) =>
-        isAuthenticated ? (
+      render={
+        (props) => (
+          // isAuthenticated ? (
           <Layout>
             <Component {...props} />
           </Layout>
-        ) : (
-          <Redirect to="/authentication" />
         )
+        // ) : (
+        //   <Redirect to="/authentication" />
+        // )
       }
     />
   );
