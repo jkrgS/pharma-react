@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 const BarChart = ({ terms, loading, title }) => {
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     // get labels separated
-    const labels = terms.map((term) => term.label).join(' ');
+    const labels = terms.map((term) => term.label).join(" ");
     // word separation in an array
-    const separation = labels.split(' ');
+    const separation = labels.split(" ");
     const counts = {};
     const data = [];
     // get words and the repetition count as a key value pair
@@ -30,18 +30,18 @@ const BarChart = ({ terms, loading, title }) => {
   // chart options
   const options = {
     chart: {
-      type: 'bar',
+      type: "bar",
     },
     title: {
       text: title,
     },
     loading,
     xAxis: {
-      type: 'category',
+      type: "category",
     },
     yAxis: {
       title: {
-        text: 'Total frequency',
+        text: "Total frequency",
       },
     },
     legend: {
@@ -53,7 +53,7 @@ const BarChart = ({ terms, loading, title }) => {
         borderWidth: 0,
         dataLabels: {
           enabled: true,
-          format: '{point.y:f}',
+          format: "{point.y:f}",
         },
       },
     },
@@ -66,7 +66,7 @@ const BarChart = ({ terms, loading, title }) => {
 
     series: [
       {
-        name: 'Words',
+        name: "Words",
         colorByPoint: true,
         data: chartData,
       },

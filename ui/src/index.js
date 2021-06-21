@@ -9,15 +9,17 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import termReducer from './store/reducers/term';
+import authReducer from './store/reducers/auth';
 import ReduxThunk from 'redux-thunk';
 
 const composeEnhancers =
-  process.env.NODE_ENV === 'development'
+  (process.env.NODE_ENV === 'development'
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : null || compose;
+    : null) || compose;
 
 const rootReducer = combineReducers({
   term: termReducer,
+  auth: authReducer,
 });
 
 const store = createStore(

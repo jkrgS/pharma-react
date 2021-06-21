@@ -17,13 +17,16 @@
     "ui-prettier-format": "yarn workspace ui prettier:format"
   },
   "devDependencies": {
+    "eslint": "^7.26.0",
+    "eslint-plugin-react": "^7.23.2",
     "husky": "^4.3.5",
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1"
   },
   "lint-staged": {
-    "**/*.+(js|jsx|json|css|md)": [
-      "yarn format"
+    "**/*.+(js|jsx|css|md)": [
+      "eslint . --fix",
+      "git add"
     ]
   },
   "husky": {
