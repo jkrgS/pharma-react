@@ -97,7 +97,7 @@ export const fetchTermData = (page = _tables.page) => {
               shape="circle"
               icon={<DeleteOutlined />}
               style={{ backgroundColor: '#B2204F', borderColor: '#B2204F' }}
-              // onClick={() => dispatch(modal(true))}
+              onClick={() => dispatch(modal(true))}
             />
           </div>
         ),
@@ -106,20 +106,8 @@ export const fetchTermData = (page = _tables.page) => {
 
     getTerms(page.current, page.size)
       .then(({ data }) => {
-        const terms = data._embedded.terms.map((term) => {
-          return {
-            key: term.obo_id,
-            label: term.label,
-            synonyms: term.synonyms ? term.synonyms.join(', ') : '-',
-            obo_id: term.obo_id,
-            term_editor: term.annotation['term editor']
-              ? term.annotation['term editor'].join(', ')
-              : '-',
-            has_children: term.has_children,
-          };
-        });
-
-        dispatch(termDataSuccess(terms, data.page.totalElements, columns));
+        const { terms, count } = data;
+        dispatch(termDataSuccess(terms, count, columns));
       })
       .catch((e) => dispatch(termDataFail(e)));
   };
