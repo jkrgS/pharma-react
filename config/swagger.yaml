@@ -240,9 +240,20 @@ paths:
     get:
       summary: Get a list of terms, depend on user page and and size
       description: Restricted to authenticated users.
-      operationId: getTerms-paginated
-      security:
-        - bearerAuth: []
+      operationId: getTerms-paginatedrequest
+      parameters:
+        - in: query
+          name: parameters
+          required: false
+          schema:
+            type: object
+            properties:
+              from:
+                type: integer
+                example: 1
+              size:
+                type: integer
+                example: 10
       responses:
         "200":
           description: An array of all accounts
