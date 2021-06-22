@@ -12,15 +12,15 @@ paths:
   ### 1st step
   /api/getTerms:
     get:
-      summary: Get a list of terms, depend on user page and and size
+      summary: Get a list of terms, depend on user page and size
       description: Restricted to authenticated users.
       operationId: getTerms-paginatedrequest
       parameters:
         - in: query
           name: parameters
-          required: false
+          required: true
           schema:
-            type: object
+            type: object ## {from: 1, size: 10}
             properties:
               from:
                 type: integer
@@ -30,11 +30,11 @@ paths:
                 example: 10
       responses:
         "200":
-          description: An array of all accounts
+          description: An array of specific terms
           content:
             application/json:
               schema:
-                type: array
+                type: array ## [{key: 'CHEBI:18320', label: }]
                 items:
                   type: object
                   properties:
@@ -68,7 +68,7 @@ paths:
         schema:
           type: string
     put:
-      summary: Update an account
+      summary: Update an term
       description: Admin users can update any term
       operationId: updateTerm
       requestBody:
@@ -117,8 +117,6 @@ paths:
       summary: Delete a term
       description: Admin users can delete any term.
       operationId: deleteTerm
-      security:
-        - bearerAuth: []
       responses:
         "200":
           description: Term deleted successfully
