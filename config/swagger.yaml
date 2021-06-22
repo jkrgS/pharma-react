@@ -9,6 +9,132 @@ servers:
     description: Local development server
 
 paths:
+  ### 1st step
+  /api/getTerms:
+    get:
+      summary: Get a list of terms, depend on user page and and size
+      description: Restricted to authenticated users.
+      operationId: getTerms-paginatedrequest
+      parameters:
+        - in: query
+          name: parameters
+          required: false
+          schema:
+            type: object
+            properties:
+              from:
+                type: integer
+                example: 1
+              size:
+                type: integer
+                example: 10
+      responses:
+        "200":
+          description: An array of all accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      example: "CHEBI:18320"
+                    label:
+                      type: string
+                      example: "1,4-dithiothreitol"
+                    synonyms:
+                      type: string
+                      example: "Del(14)(q12), 14q12 microdeletion syndrome, monosomy 14q12, Monosomy 14q12"
+                    obo_id:
+                      type: string
+                      example: "1,4-dithiothreitol"
+                    term_editor:
+                      type: string
+                      example: "Laura Harris"
+                    has_children:
+                      type: boolean
+                      example: false
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  /api/term/{id}:
+    parameters:
+      - in: path
+        name: id
+        description: Term id
+        required: true
+        example: "CHEBI:18"
+        schema:
+          type: string
+    put:
+      summary: Update an account
+      description: Admin users can update any term
+      operationId: updateTerm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  type: string
+                  example: "CHEBI:18320"
+                label:
+                  type: string
+                  example: "dithiothreitol"
+                synonyms:
+                  type: string
+                  example: "Del(14)(q12), 14q12 microdeletion syndrome"
+                obo_id:
+                  type: string
+                  example: "1,4-dithiothreitol"
+                term_editor:
+                  type: string
+                  example: "Laura Harris"
+                has_children:
+                  type: boolean
+                  example: false
+
+        responses:
+          "200":
+            description: Term updated successfully.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      example: "CHEBI:18320"
+
+          "404":
+            $ref: "#/components/responses/NotFoundError"
+          "401":
+            $ref: "#/components/responses/UnauthorizedError"
+    delete:
+      summary: Delete a term
+      description: Admin users can delete any term.
+      operationId: deleteTerm
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Term deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Term deleted successfully"
+        "404":
+          $ref: "#/components/responses/NotFoundError"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+  ## 2nd step
   /auth/login:
     post:
       summary: Authenticate account credentials and return a JWT token and a cookie with a refresh token
@@ -81,7 +207,6 @@ paths:
                   message:
                     type: string
                     example: "Email or password is incorrect"
-
   /auth/register:
     post:
       summary: Register a new user account and send a verification email
@@ -235,128 +360,3 @@ paths:
                   message:
                     type: string
                     example: "Invalid token"
-  ### 1st step
-  /api/getTerms:
-    get:
-      summary: Get a list of terms, depend on user page and and size
-      description: Restricted to authenticated users.
-      operationId: getTerms-paginatedrequest
-      parameters:
-        - in: query
-          name: parameters
-          required: false
-          schema:
-            type: object
-            properties:
-              from:
-                type: integer
-                example: 1
-              size:
-                type: integer
-                example: 10
-      responses:
-        "200":
-          description: An array of all accounts
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                      example: "CHEBI:18320"
-                    label:
-                      type: string
-                      example: "1,4-dithiothreitol"
-                    synonyms:
-                      type: string
-                      example: "Del(14)(q12), 14q12 microdeletion syndrome, monosomy 14q12, Monosomy 14q12"
-                    obo_id:
-                      type: string
-                      example: "1,4-dithiothreitol"
-                    term_editor:
-                      type: string
-                      example: "Laura Harris"
-                    has_children:
-                      type: boolean
-                      example: false
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
-  /api/term/{id}:
-    parameters:
-      - in: path
-        name: id
-        description: Term id
-        required: true
-        example: "CHEBI:18"
-        schema:
-          type: string
-    put:
-      summary: Update an account
-      description: Admin users can update any term
-      operationId: updateTerm
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                key:
-                  type: string
-                  example: "CHEBI:18320"
-                label:
-                  type: string
-                  example: "dithiothreitol"
-                synonyms:
-                  type: string
-                  example: "Del(14)(q12), 14q12 microdeletion syndrome"
-                obo_id:
-                  type: string
-                  example: "1,4-dithiothreitol"
-                term_editor:
-                  type: string
-                  example: "Laura Harris"
-                has_children:
-                  type: boolean
-                  example: false
-
-        responses:
-          "200":
-            description: Term updated successfully.
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                      example: "CHEBI:18320"
-
-          "404":
-            $ref: "#/components/responses/NotFoundError"
-          "401":
-            $ref: "#/components/responses/UnauthorizedError"
-    delete:
-      summary: Delete a term
-      description: Admin users can delete any term.
-      operationId: deleteTerm
-      security:
-        - bearerAuth: []
-      responses:
-        "200":
-          description: Term deleted successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Term deleted successfully"
-        "404":
-          $ref: "#/components/responses/NotFoundError"
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
