@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: server-side {your desired name}
+  title: server-side-{your desired name}
   description: Node.js + MongoDB - API with email sign-up, verification, authentication and forgot password + data manipulation + paginated data serving
   version: 1.0.0
 
