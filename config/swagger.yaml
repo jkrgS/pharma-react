@@ -34,28 +34,33 @@ paths:
           content:
             application/json:
               schema:
-                type: array ## [{key: 'CHEBI:18320', label: }]
-                items:
+                data:
                   type: object
                   properties:
-                    key:
-                      type: string
-                      example: "CHEBI:18320"
-                    label:
-                      type: string
-                      example: "1,4-dithiothreitol"
-                    synonyms:
-                      type: string
-                      example: "Del(14)(q12), 14q12 microdeletion syndrome, monosomy 14q12, Monosomy 14q12"
-                    obo_id:
-                      type: string
-                      example: "1,4-dithiothreitol"
-                    term_editor:
-                      type: string
-                      example: "Laura Harris"
-                    has_children:
-                      type: boolean
-                      example: false
+                    terms:
+                      type: array ## [{key: 'CHEBI:18320', label: }]
+                      properties:
+                        key:
+                          type: string
+                          example: "CHEBI:18320"
+                        label:
+                          type: string
+                          example: "1,4-dithiothreitol"
+                        synonyms:
+                          type: string
+                          example: "Del(14)(q12), 14q12 microdeletion syndrome, monosomy 14q12, Monosomy 14q12"
+                        obo_id:
+                          type: string
+                          example: "1,4-dithiothreitol"
+                        term_editor:
+                          type: string
+                          example: "Laura Harris"
+                        has_children:
+                          type: boolean
+                          example: false
+                    count:
+                      type: integer
+                      example: 1000
         "401":
           $ref: "#/components/responses/UnauthorizedError"
   /api/term/{id}:
