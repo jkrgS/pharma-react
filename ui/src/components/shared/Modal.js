@@ -1,70 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+import React, { useEffect, useState, useCallback } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
+import { forms } from '../../shared/forms';
+import { updateTerm } from '../../services/terms';
 
-const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  },
-}));
-
-const TransitionsModal = ({ modalOpen, onModalClose }) => {
-  const classes = useStyles();
+const TransitionsModal = ({ modalOpen, modal, onModalClose, termsUpdated }) => {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => (modalOpen ? handleOpen() : handleClose()), [modalOpen]);
+  const [form, setForm] = useState({
+    key: '',
+    label: '',
+    synonyms: '',
+    term_editor: '',
+    has_children: false,
+  });
+  const { EditTermFields } = forms;
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setOpen(false);
     onModalClose(false);
+  }, [onModalClose]);
+
+  const handleFieldChange = (event) => {
+    let newValue = {};
+    const { target } = event;
+    const id = target ? target.id : 'has_children';
+    const value = target ? target.value : event;
+
+    newValue[id] = value;
+    setForm({ ...form, ...newValue });
   };
+
+  const handleUpdateTerm = () => {
+    updateTerm(form);
+    handleClose();
+    termsUpdated();
+  };
+
+  useEffect(() => {
+    modalOpen ? handleOpen() : handleClose();
+    if (modalOpen) {
+      setForm({ ...modal?.data });
+    }
+  }, [modalOpen, handleClose, modal?.data]);
 
   return (
     <div>
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
+      <Dialog
         open={open}
         onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        aria-labelledby="form-dialog-title"
       >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Transition modal</h2>
-            <p id="transition-modal-description">
-              react-transition-group animates me.
-            </p>
-          </div>
-        </Fade>
-      </Modal>
+        <DialogTitle id="form-dialog-title">{}</DialogTitle>
+        <DialogContent>
+          {modalOpen && (
+            <EditTermFields
+              onChange={(e) => handleFieldChange(e)}
+              term={form}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleUpdateTerm}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    modalOpen: state.term.modal?.status?.status,
+    modalOpen: state.term.modal?.status,
+    modal: state.term?.modal,
   };
 };
 

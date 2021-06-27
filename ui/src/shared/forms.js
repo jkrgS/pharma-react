@@ -3,6 +3,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { _term } from '../models/interfaces/ITerms';
+import { Switch } from 'antd';
+import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 
 const Copyright = () => (
   <Typography variant="body2" color="textSecondary" align="center">
@@ -156,10 +159,58 @@ const ResetFields = ({ onChange }) => (
   </>
 );
 
+const EditTermFields = ({ onChange, term = _term }) => (
+  <>
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      id="label"
+      label="Name"
+      name="name"
+      value={term.label}
+      onChange={(e) => onChange(e)}
+      autoFocus
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      multiline
+      id="synonyms"
+      label="Synonyms"
+      name="synonyms"
+      value={term.synonyms}
+      onChange={(e) => onChange(e)}
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      id="term_editor"
+      label="Editor"
+      name="editor"
+      value={term.term_editor}
+      onChange={(e) => onChange(e)}
+      autoFocus
+    />
+    <Switch
+      checkedChildren={<CheckOutlined />}
+      unCheckedChildren={<CloseOutlined />}
+      defaultChecked={term.has_children}
+      onChange={onChange}
+    />
+  </>
+);
+
 export const forms = {
   Copyright,
   LoginFields,
   RegisterFields,
   ForgotFields,
   ResetFields,
+  EditTermFields,
 };

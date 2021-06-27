@@ -10,14 +10,7 @@ import PropTypes from 'prop-types';
 import TransitionsModal from '../shared/Modal';
 import { AppstoreAddOutlined } from '@ant-design/icons';
 
-const DataTable = ({
-  onFetchTerms,
-  terms,
-  total_elements,
-  columns,
-  loading,
-  modalOpen,
-}) => {
+const DataTable = ({ onFetchTerms, terms }) => {
   const [pagination, setPagination] = useState({
     current: 1,
     size: 10,
@@ -25,7 +18,7 @@ const DataTable = ({
 
   useEffect(() => {
     onFetchTerms(pagination);
-  }, [modalOpen, onFetchTerms, pagination]);
+  }, [onFetchTerms, pagination]);
 
   return (
     <>
@@ -51,20 +44,19 @@ const DataTable = ({
             justifyContent: 'center',
             width: '113px',
           }}
-          // onClick={() => dispatch(modal(true))}
         />
         <Divider className="pageDivider" />
         <Table
-          columns={columns}
-          dataSource={terms}
-          loading={loading}
+          columns={terms.columns}
+          dataSource={[...terms.terms]}
+          loading={terms.loading}
           pagination={false}
         />
         <Pagination
           className="tablePaginator"
           current={pagination.current}
-          total={total_elements || 0}
-          disabled={loading}
+          total={terms.total_elements || 0}
+          disabled={terms.loading}
           onChange={(page, pageSize) =>
             setPagination({ current: page, size: pageSize })
           }
@@ -72,26 +64,19 @@ const DataTable = ({
         <Divider className="pageDivider" />
         <BarChart title="Word label frequency" />
       </div>
-      <TransitionsModal />
+      <TransitionsModal termsUpdated={() => onFetchTerms(pagination)} />
     </>
   );
 };
 
 DataTable.propTypes = {
   onFetchTerms: PropTypes.func,
-  terms: PropTypes.array.isRequired,
-  total_elements: PropTypes.number,
-  columns: PropTypes.array,
-  loading: PropTypes.bool.isRequired,
+  terms: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    terms: state.term.terms,
-    total_elements: state.term.total_elements,
-    columns: state.term.columns,
-    loading: state.term.loading,
-    modalOpen: state.term.modal?.status?.status,
+    terms: state.term,
   };
 };
 

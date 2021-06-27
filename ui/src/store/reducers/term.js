@@ -28,7 +28,7 @@ const termDataFail = (state, action) => {
 
 const modalStatus = (state, action) => {
   return updateObject(state, {
-    modal: { status: action },
+    modal: { ...action },
   });
 };
 
