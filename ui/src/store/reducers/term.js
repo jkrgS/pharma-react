@@ -26,9 +26,39 @@ const termDataFail = (state, action) => {
   });
 };
 
-const modalStatus = (state, action) => {
+const editTermSuccess = (state, action) => {
   return updateObject(state, {
-    modal: { status: action },
+    terms: state.terms.map((term) => {
+      return term.key === action.editTerm.key
+        ? { ...term, ...action.editTerm }
+        : term;
+    }),
+  });
+};
+
+const editTermFail = (state, action) => {
+  return updateObject(state, {
+    loading: false,
+  });
+};
+
+const deleteTermSuccess = (state, action) => {
+  console.log({ action });
+  return updateObject(state, {
+    terms: state.terms.filter((term) => term.key !== action.deleteTerm.key),
+  });
+};
+
+const deleteTermFail = (state, action) => {
+  return updateObject(state, {
+    loading: false,
+  });
+};
+
+const modalStatus = (state, action) => {
+  const { status, onDelete, term } = action;
+  return updateObject(state, {
+    modal: { status, onDelete, term },
   });
 };
 
@@ -40,6 +70,14 @@ const reducer = (state = initialState, action) => {
       return termDataSuccess(state, action);
     case actionTypes.TERM_DATA_FAIL:
       return termDataFail(state, action);
+    case actionTypes.EDIT_TERM_SUCCESS:
+      return editTermSuccess(state, action);
+    case actionTypes.EDIT_TERM_FAIL:
+      return editTermFail(state, action);
+    case actionTypes.DELETE_TERM_SUCCESS:
+      return deleteTermSuccess(state, action);
+    case actionTypes.DELETE_TERM_FAIL:
+      return deleteTermFail(state, action);
     case actionTypes.MODAL_STATUS:
       return modalStatus(state, action);
     default:
