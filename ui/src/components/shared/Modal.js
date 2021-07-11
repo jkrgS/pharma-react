@@ -12,25 +12,31 @@ const FormDialog = ({
   modalStatus,
   onModalClose,
   modalTerm,
+  onCreateTerm,
   onEditTerm,
   onDeleteTerm,
   modalDeleteAction,
+  modalAddNewAction,
 }) => {
-  const [form, setForm] = useState({
-    key: '',
-    label: '',
-    synonyms: '',
-    term_editor: '',
-  });
-  const { EditTermFields } = forms;
+  const [form, setForm] = useState({});
+  const { EditTermFields, CreateTermFields } = forms;
 
   const handleFieldChange = (event) => {
-    const id = event.target.id;
-    const value = event.target.value;
+    const id = !event?.target ? 'has_children' : event?.target?.id;
+    const value = !event?.target ? event?.switch : event?.target?.value;
 
-    const newForm = { ...form, [id]: value };
+    if (id) {
+      const newValue =
+        id === 'obo_id' ? { [id]: value, key: value } : { [id]: value };
+      const newForm = { ...form, ...newValue };
 
-    setForm({ ...newForm });
+      setForm({ ...newForm });
+    }
+  };
+
+  const handleCreate = () => {
+    onCreateTerm(form);
+    onModalClose(false);
   };
 
   const handleEdit = () => {
@@ -49,13 +55,24 @@ const FormDialog = ({
 
   useEffect(
     () =>
-      setForm({
-        key: modalTerm?.key,
-        label: modalTerm?.label,
-        synonyms: modalTerm?.synonyms,
-        term_editor: modalTerm?.term_editor,
-      }),
-    [modalTerm]
+      setForm(
+        !modalAddNewAction
+          ? {
+              key: modalTerm?.key,
+              label: modalTerm?.label,
+              synonyms: modalTerm?.synonyms,
+              term_editor: modalTerm?.term_editor,
+            }
+          : {
+              has_children: false,
+              key: '',
+              label: '',
+              obo_id: '',
+              synonyms: '',
+              term_editor: '',
+            }
+      ),
+    [modalAddNewAction, modalTerm]
   );
 
   return (
@@ -80,7 +97,7 @@ const FormDialog = ({
             </DialogActions>
           </>
         )}
-        {!modalDeleteAction && (
+        {!modalDeleteAction && !modalAddNewAction && (
           <>
             <DialogTitle id="form-dialog-title">Edit Term</DialogTitle>
             <DialogContent>
@@ -99,6 +116,22 @@ const FormDialog = ({
             </DialogActions>
           </>
         )}
+        {modalAddNewAction && (
+          <>
+            <DialogTitle id="form-dialog-title">Add New Term</DialogTitle>
+            <DialogContent>
+              <CreateTermFields onChange={(e) => handleFieldChange(e)} />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="secondary">
+                Cancel
+              </Button>
+              <Button onClick={handleCreate} color="primary">
+                Create
+              </Button>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </div>
   );
@@ -107,6 +140,7 @@ const FormDialog = ({
 const mapStateToProps = (state) => {
   return {
     modalStatus: state.term.modal?.status,
+    modalAddNewAction: state.term.modal?.onAddNew,
     modalDeleteAction: state.term.modal?.onDelete,
     modalTerm: state.term.modal?.term,
   };
@@ -115,6 +149,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onModalClose: (status) => dispatch(actions.modal(status, null, null)),
+    onCreateTerm: (term) => dispatch(actions.createTerm(term)),
     onEditTerm: (term) => dispatch(actions.editTerm(term)),
     onDeleteTerm: (term) => dispatch(actions.deleteTerm(term)),
   };

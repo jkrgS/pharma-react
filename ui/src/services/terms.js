@@ -10,6 +10,13 @@ export const getTerms = async (page = 1, size = 10) => {
   );
 };
 
+export const createTerm = async (term = _term) => {
+  return await axios.post(
+    `${process.env.REACT_APP_SERVER_DOMAIN}/api/createTerm`,
+    { term }
+  );
+};
+
 export const editTerm = async (term = _term) => {
   return await axios.put(
     `${process.env.REACT_APP_SERVER_DOMAIN}/api/editTerm`,

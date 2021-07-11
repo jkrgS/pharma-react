@@ -2,6 +2,7 @@ export {
   termDataSuccess,
   termDataFail,
   fetchTermData,
+  createTerm,
   editTerm,
   deleteTerm,
   modal,

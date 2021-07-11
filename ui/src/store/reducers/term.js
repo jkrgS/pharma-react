@@ -26,6 +26,12 @@ const termDataFail = (state, action) => {
   });
 };
 
+const createTermFail = (state, action) => {
+  return updateObject(state, {
+    loading: false,
+  });
+};
+
 const editTermSuccess = (state, action) => {
   return updateObject(state, {
     terms: state.terms.map((term) => {
@@ -55,9 +61,9 @@ const deleteTermFail = (state, action) => {
 };
 
 const modalStatus = (state, action) => {
-  const { status, onDelete, term } = action;
+  const { status, onDelete, onAddNew, term } = action;
   return updateObject(state, {
-    modal: { status, onDelete, term },
+    modal: { status, onDelete, onAddNew, term },
   });
 };
 
@@ -69,6 +75,8 @@ const reducer = (state = initialState, action) => {
       return termDataSuccess(state, action);
     case actionTypes.TERM_DATA_FAIL:
       return termDataFail(state, action);
+    case actionTypes.CREATE_TERM_FAIL:
+      return createTermFail(state, action);
     case actionTypes.EDIT_TERM_SUCCESS:
       return editTermSuccess(state, action);
     case actionTypes.EDIT_TERM_FAIL:

@@ -2,6 +2,7 @@ import { _tables } from '../../models/interfaces/ITables';
 import { _term, _terms } from '../../models/interfaces/ITerms';
 import {
   getTerms,
+  createTerm as createTermService,
   editTerm as editTermService,
   deleteTerm as deleteTermService,
 } from '../../services/terms';
@@ -26,6 +27,22 @@ export const termDataSuccess = (terms = _terms, total = 0, columns) => {
 export const termDataFail = (error) => {
   return {
     type: actionTypes.TERM_DATA_FAIL,
+    error,
+  };
+};
+
+export const createTermSuccess = (term = _term) => {
+  const { _v, _id, ...termData } = term;
+  console.log({ termData });
+  return {
+    type: actionTypes.CREATE_TERM_SUCCESS,
+    createTerm: termData,
+  };
+};
+
+export const createTermFail = (error) => {
+  return {
+    type: actionTypes.CREATE_TERM_FAIL,
     error,
   };
 };
@@ -62,8 +79,8 @@ export const fetchTermDataStart = () => {
   return { type: actionTypes.TERM_DATA_FETCH };
 };
 
-export const modal = (status, onDelete, term = _term) => {
-  return { type: actionTypes.MODAL_STATUS, status, onDelete, term };
+export const modal = (status, onDelete, term = _term, onAddNew = false) => {
+  return { type: actionTypes.MODAL_STATUS, status, onDelete, term, onAddNew };
 };
 
 export const fetchTermData = (page = _tables.page) => {
@@ -142,6 +159,17 @@ export const fetchTermData = (page = _tables.page) => {
         dispatch(termDataSuccess(terms, count, columns));
       })
       .catch((e) => dispatch(termDataFail(e)));
+  };
+};
+
+export const createTerm = (term = _term) => {
+  return (dispatch) => {
+    createTermService(term)
+      .then(({ data }) => {
+        dispatch(createTermSuccess(data.term));
+        dispatch(fetchTermData({ current: 1, size: 10 }));
+      })
+      .catch((e) => dispatch(createTermFail(e)));
   };
 };
 
