@@ -17,6 +17,7 @@ const DataTable = ({
   columns,
   loading,
   modalOpen,
+  onModalOpen,
 }) => {
   const [pagination, setPagination] = useState({
     current: 1,
@@ -51,7 +52,7 @@ const DataTable = ({
             justifyContent: 'center',
             width: '113px',
           }}
-          // onClick={() => dispatch(modal(true))}
+          onClick={() => onModalOpen()}
         />
         <Divider className="pageDivider" />
         <Table
@@ -99,6 +100,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onFetchTerms: (page = _tables.page) =>
       dispatch(actions.fetchTermData(page)),
+    onModalOpen: () => dispatch(actions.modal(true, false, {}, true)),
   };
 };
 

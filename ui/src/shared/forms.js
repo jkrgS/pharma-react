@@ -3,6 +3,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { Switch } from 'antd';
 
 const Copyright = () => (
   <Typography variant="body2" color="textSecondary" align="center">
@@ -166,7 +168,7 @@ const EditTermFields = ({ onChange, term }) => (
       id="label"
       label="Name"
       name="name"
-      value={term.label || ''}
+      value={term?.label || ''}
       onChange={(e) => onChange(e)}
       autoFocus
     />
@@ -179,7 +181,7 @@ const EditTermFields = ({ onChange, term }) => (
       id="synonyms"
       label="Synonyms"
       name="synonyms"
-      value={term.synonyms || ''}
+      value={term?.synonyms || ''}
       onChange={(e) => onChange(e)}
     />
     <TextField
@@ -189,8 +191,69 @@ const EditTermFields = ({ onChange, term }) => (
       id="term_editor"
       label="Editor"
       name="term_editor"
-      value={term.term_editor || ''}
+      value={term?.term_editor || ''}
       onChange={(e) => onChange(e)}
+    />
+  </>
+);
+
+const CreateTermFields = ({ onChange }) => (
+  <>
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      id="obo_id"
+      label="Code"
+      name="obo_id"
+      onChange={(e) => onChange(e)}
+      autoFocus
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      id="label"
+      label="Name"
+      name="name"
+      onChange={(e) => onChange(e)}
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      multiline
+      id="synonyms"
+      label="Synonyms"
+      name="synonyms"
+      onChange={(e) => onChange(e)}
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      fullWidth
+      id="term_editor"
+      label="Editor"
+      name="term_editor"
+      onChange={(e) => onChange(e)}
+    />
+    <FormControlLabel
+      control={
+        <Switch
+          style={{ marginLeft: '1rem' }}
+          checkedChildren={<CheckOutlined />}
+          unCheckedChildren={<CloseOutlined />}
+          defaultChecked={false}
+        />
+      }
+      label="Has children"
+      labelPlacement="start"
+      style={{ marginLeft: 0 }}
+      onChange={(e) => onChange({ switch: e })}
+      id="has_children"
     />
   </>
 );
@@ -202,4 +265,5 @@ export const forms = {
   ForgotFields,
   ResetFields,
   EditTermFields,
+  CreateTermFields,
 };
