@@ -43,7 +43,6 @@ const editTermFail = (state, action) => {
 };
 
 const deleteTermSuccess = (state, action) => {
-  console.log({ action });
   return updateObject(state, {
     terms: state.terms.filter((term) => term.key !== action.deleteTerm.key),
   });
