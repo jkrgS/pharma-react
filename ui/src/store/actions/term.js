@@ -1,6 +1,10 @@
 import { _tables } from '../../models/interfaces/ITables';
-import { _terms } from '../../models/interfaces/ITerms';
-import { getTerms } from '../../services/terms';
+import { _term, _terms } from '../../models/interfaces/ITerms';
+import {
+  getTerms,
+  editTerm as editTermService,
+  deleteTerm as deleteTermService,
+} from '../../services/terms';
 import * as actionTypes from './actionTypes';
 import { Switch, Tooltip, Button } from 'antd';
 import {
@@ -26,12 +30,40 @@ export const termDataFail = (error) => {
   };
 };
 
+export const editTermSuccess = (term = _term) => {
+  return {
+    type: actionTypes.EDIT_TERM_SUCCESS,
+    editTerm: term,
+  };
+};
+
+export const editTermFail = (error) => {
+  return {
+    type: actionTypes.EDIT_TERM_FAIL,
+    error,
+  };
+};
+
+export const deleteTermSuccess = (term = _term) => {
+  return {
+    type: actionTypes.DELETE_TERM_SUCCESS,
+    deleteTerm: term,
+  };
+};
+
+export const deleteTermFail = (error) => {
+  return {
+    type: actionTypes.DELETE_TERM_FAIL,
+    error,
+  };
+};
+
 export const fetchTermDataStart = () => {
   return { type: actionTypes.TERM_DATA_FETCH };
 };
 
-export const modal = (status) => {
-  return { type: actionTypes.MODAL_STATUS, status };
+export const modal = (status, onDelete, term = _term) => {
+  return { type: actionTypes.MODAL_STATUS, status, onDelete, term };
 };
 
 export const fetchTermData = (page = _tables.page) => {
@@ -79,7 +111,7 @@ export const fetchTermData = (page = _tables.page) => {
       },
       {
         title: '',
-        render: () => (
+        render: (term) => (
           <div style={{ display: 'flex' }}>
             <Button
               type="primary"
@@ -90,14 +122,14 @@ export const fetchTermData = (page = _tables.page) => {
                 borderColor: '#05CAA6',
                 marginRight: '9px',
               }}
-              onClick={() => dispatch(modal(true))}
+              onClick={() => dispatch(modal(true, false, term))}
             />
             <Button
               type="primary"
               shape="circle"
               icon={<DeleteOutlined />}
               style={{ backgroundColor: '#B2204F', borderColor: '#B2204F' }}
-              onClick={() => dispatch(modal(true))}
+              onClick={() => dispatch(modal(true, true, term))}
             />
           </div>
         ),
@@ -110,5 +142,21 @@ export const fetchTermData = (page = _tables.page) => {
         dispatch(termDataSuccess(terms, count, columns));
       })
       .catch((e) => dispatch(termDataFail(e)));
+  };
+};
+
+export const editTerm = (term = _term) => {
+  return (dispatch) => {
+    editTermService(term)
+      .then(({ data }) => dispatch(editTermSuccess(data.term)))
+      .catch((e) => dispatch(editTermFail(e)));
+  };
+};
+
+export const deleteTerm = (term = _term) => {
+  return (dispatch) => {
+    deleteTermService(term)
+      .then(({ data }) => dispatch(deleteTermSuccess(data.term)))
+      .catch((e) => dispatch(deleteTermFail(e)));
   };
 };

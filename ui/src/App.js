@@ -5,7 +5,6 @@ import {
   withRouter,
   Redirect,
   BrowserRouter,
-  Link,
 } from 'react-router-dom';
 import ProtectedRoute from './components/UI/ProtectedRoute';
 

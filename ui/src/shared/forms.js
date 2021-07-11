@@ -156,10 +156,50 @@ const ResetFields = ({ onChange }) => (
   </>
 );
 
+const EditTermFields = ({ onChange, term }) => (
+  <>
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      id="label"
+      label="Name"
+      name="name"
+      value={term.label || ''}
+      onChange={(e) => onChange(e)}
+      autoFocus
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      required
+      fullWidth
+      multiline
+      id="synonyms"
+      label="Synonyms"
+      name="synonyms"
+      value={term.synonyms || ''}
+      onChange={(e) => onChange(e)}
+    />
+    <TextField
+      variant="outlined"
+      margin="normal"
+      fullWidth
+      id="term_editor"
+      label="Editor"
+      name="term_editor"
+      value={term.term_editor || ''}
+      onChange={(e) => onChange(e)}
+    />
+  </>
+);
+
 export const forms = {
   Copyright,
   LoginFields,
   RegisterFields,
   ForgotFields,
   ResetFields,
+  EditTermFields,
 };
