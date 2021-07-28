@@ -72,9 +72,6 @@ const Auth = ({
       email: '',
       password: '',
       confirmPassword: '',
-      token: '',
-      acceptTerms: true,
-      // remember: false,
     }),
     []
   );
