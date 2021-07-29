@@ -67,6 +67,13 @@ const modalStatus = (state, action) => {
   });
 };
 
+const snackbarStatus = (state, action) => {
+  const { status, severity, message } = action;
+  return updateObject(state, {
+    snackbar: { status, severity, message },
+  });
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.TERM_DATA_FETCH:
@@ -87,6 +94,8 @@ const reducer = (state = initialState, action) => {
       return deleteTermFail(state, action);
     case actionTypes.MODAL_STATUS:
       return modalStatus(state, action);
+    case actionTypes.SNACKBAR_STATUS:
+      return snackbarStatus(state, action);
     default:
       return state;
   }

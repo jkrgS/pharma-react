@@ -20,3 +20,4 @@ export const RESET_USER_FAIL = 'RESET_USER_FAIL';
 
 // general
 export const MODAL_STATUS = 'MODAL_STATUS';
+export const SNACKBAR_STATUS = 'SNACKBAR_STATUS';

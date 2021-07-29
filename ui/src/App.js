@@ -6,6 +6,7 @@ import {
   Redirect,
   BrowserRouter,
 } from 'react-router-dom';
+import Snack from './components/shared/Snack';
 import ProtectedRoute from './components/UI/ProtectedRoute';
 
 const Home = React.lazy(() => {
@@ -41,6 +42,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
+      <Suspense>
+        <Snack />
+      </Suspense>
     </BrowserRouter>
   );
 };
