@@ -82,6 +82,9 @@ export const fetchTermDataStart = () => {
 export const modal = (status, onDelete, term = _term, onAddNew = false) => {
   return { type: actionTypes.MODAL_STATUS, status, onDelete, term, onAddNew };
 };
+export const snackbar = (status, severity = '', message = '') => {
+  return { type: actionTypes.SNACKBAR_STATUS, status, severity, message };
+};
 
 export const fetchTermData = (page = _tables.page) => {
   return (dispatch) => {

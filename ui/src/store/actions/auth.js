@@ -6,6 +6,7 @@ import {
   resetUser as resetUserService,
 } from '../../services/auth';
 import * as actionTypes from './actionTypes';
+import { snackbar } from './term';
 
 export const registerUserSuccess = (message) => {
   return {
@@ -66,8 +67,16 @@ export const resetUserFail = (data) => {
 export const registerUser = (user = _user) => {
   return (dispatch) => {
     registerUserService(user)
-      .then(({ data }) => dispatch(registerUserSuccess(data.message)))
-      .catch(({ error }) => dispatch(registerUserFail(error)));
+      .then(({ data }) => {
+        dispatch(registerUserSuccess(data.message));
+        dispatch(snackbar(true, 'success', data.message));
+      })
+      .catch(({ response }) => {
+        const { error } = response.data;
+
+        dispatch(registerUserFail(error));
+        dispatch(snackbar(true, 'error', error));
+      });
   };
 };
 
@@ -76,23 +85,46 @@ export const loginUser = (user = _user) => {
   const loginData = { email, password };
   return (dispatch) => {
     loginUserService(loginData)
-      .then(({ data }) => dispatch(loginUserSuccess(data)))
-      .catch(({ error }) => dispatch(loginUserFail(error)));
+      .then(({ data }) => {
+        dispatch(loginUserSuccess(data));
+        dispatch(snackbar(true, 'success', 'You are logged in'));
+      })
+      .catch(({ response }) => {
+        const { error } = response.data;
+
+        dispatch(loginUserFail(error));
+        dispatch(snackbar(true, 'error', error));
+      });
   };
 };
 
 export const forgotUser = (user = _user) => {
   return (dispatch) => {
     forgotUserService(user)
-      .then(({ data }) => dispatch(forgotUserSuccess(data)))
-      .catch(({ error }) => dispatch(forgotUserFail(error)));
+      .then(({ data }) => {
+        dispatch(forgotUserSuccess(data));
+        dispatch(snackbar(true, 'success', data.message));
+      })
+      .catch(({ response }) => {
+        const { error } = response.data;
+
+        dispatch(forgotUserFail(error));
+        dispatch(snackbar(true, 'error', error));
+      });
   };
 };
 
 export const resetUser = (user = _user) => {
   return (dispatch) => {
     resetUserService(user)
-      .then(({ data }) => dispatch(resetUserSuccess(data)))
-      .catch(({ error }) => dispatch(resetUserFail(error)));
+      .then(({ data }) => {
+        dispatch(resetUserSuccess(data));
+        dispatch(snackbar(true, 'success', data.message));
+      })
+      .catch(({ response }) => {
+        const { error } = response.data;
+        dispatch(resetUserFail(error));
+        dispatch(snackbar(true, 'error', error));
+      });
   };
 };
