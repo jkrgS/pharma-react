@@ -33,7 +33,7 @@ export const termDataFail = (error) => {
 
 export const createTermSuccess = (term = _term) => {
   const { _v, _id, ...termData } = term;
-  console.log({ termData });
+
   return {
     type: actionTypes.CREATE_TERM_SUCCESS,
     createTerm: termData,

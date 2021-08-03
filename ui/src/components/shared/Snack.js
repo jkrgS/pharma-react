@@ -32,14 +32,6 @@ const Snack = ({ snackbar, onSnackbarStatus }) => {
   };
 
   useEffect(() => {
-    console.log({
-      snack: {
-        status: snackbar?.status,
-        message: snackbar?.message,
-        severity: snackbar?.severity,
-      },
-    });
-
     setOpen(snackbar?.status);
   }, [snackbar]);
 
