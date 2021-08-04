@@ -9,7 +9,7 @@ servers:
     description: Local development server
 
 paths:
-  ### 1st step
+  # 1st step
   /api/getTerms:
     get:
       summary: Get a list of terms, depend on user page and size
@@ -61,8 +61,16 @@ paths:
                     count:
                       type: integer
                       example: 1000
-        "401":
-          $ref: "#/components/responses/UnauthorizedError"
+        "400":
+          description: Error on receiving the terms
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Server error" ## pass the exact message of the error from server
   /api/term/{id}:
     parameters:
       - in: path
@@ -115,9 +123,25 @@ paths:
                       example: "CHEBI:18320"
 
           "404":
-            $ref: "#/components/responses/NotFoundError"
-          "401":
-            $ref: "#/components/responses/UnauthorizedError"
+            description: The term not found
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Undefined term"
+          "400":
+            description: Error on receiving the term
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: "Server error" ## pass the exact message of the error from server
     delete:
       summary: Delete a term
       description: Admin users can delete any term.
@@ -173,7 +197,7 @@ paths:
                   token:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWIxMmUxOTdlMDZhNzZjY2RlZmMxMjEiLCJpZCI6IjVlYjEyZTE5N2UwNmE3NmNjZGVmYzEyMSIsImlhdCI6MTU4ODc1ODE1N30.xR9H0STbFOpSkuGA9jHNZOJ6eS7umHHqKRhI807YT1Y"
-        "400":
+        "401":
           description: The email or password is incorrect
           content:
             application/json:
@@ -227,6 +251,16 @@ paths:
                   message:
                     type: string
                     example: "Registration successful, please check your email for verification instructions"
+        "400":
+          description: Error on registration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "The email already exists" ## pass the exact message of the error from server
   /auth/verify-email:
     post:
       summary: Verify a new account with a verification token received by email after registration
@@ -291,6 +325,16 @@ paths:
                   message:
                     type: string
                     example: "Please check your email for password reset instructions"
+        "400":
+          description: Error on email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Email doesn't exist, please check your email" ## pass the exact message of the error from server
   /auth/reset-password:
     post:
       summary: Reset the password for an account
