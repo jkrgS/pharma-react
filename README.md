@@ -1,5 +1,7 @@
 # pharma-react
 
+![](ui/src/assets/kabamaru.gif)
+
 ### Features implemented
 
 - Paginated table of provided api data {page size selection included} (ant design) / *** i found a potential bug on the pagination of antd, you can just choose the last page, is empty{delusionally you see the data of the page you was}, the previous one has the last element.
