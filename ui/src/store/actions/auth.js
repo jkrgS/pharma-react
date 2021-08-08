@@ -129,9 +129,9 @@ export const verifyUser = (token) => {
   };
 };
 
-export const forgotUser = (user = _user) => {
+export const forgotUser = (email) => {
   return (dispatch) => {
-    forgotUserService(user)
+    forgotUserService(email)
       .then(({ data }) => {
         dispatch(forgotUserSuccess(data));
         dispatch(snackbar(true, 'success', data.message));

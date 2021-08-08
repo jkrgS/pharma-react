@@ -23,11 +23,11 @@ export const verifyUser = async (token) => {
   );
 };
 
-export const forgotUser = async (user = _user) => {
+export const forgotUser = async (email) => {
   return axios.post(
     `${process.env.REACT_APP_SERVER_DOMAIN}/auth/forgot-password`,
     {
-      ...user,
+      email,
     }
   );
 };

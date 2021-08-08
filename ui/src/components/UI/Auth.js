@@ -96,7 +96,7 @@ const Auth = ({
   const onConfirmClick = () => {
     authStatus === 'Sign up' && onRegisterUser({ ...form });
     authStatus === 'Sign in' && onLoginUser({ ...form });
-    authStatus === 'Forgot' && onForgotUser({ ...form });
+    authStatus === 'Forgot' && onForgotUser(form.email);
     authStatus === 'Reset' && onResetUser({ ...form });
   };
 
