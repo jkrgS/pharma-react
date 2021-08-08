@@ -97,7 +97,12 @@ const Auth = ({
     authStatus === 'Sign up' && onRegisterUser({ ...form });
     authStatus === 'Sign in' && onLoginUser({ ...form });
     authStatus === 'Forgot' && onForgotUser(form.email);
-    authStatus === 'Reset' && onResetUser({ ...form });
+    authStatus === 'Reset' &&
+      onResetUser({
+        token: form?.token,
+        password: form.password,
+        confirmPassword: form.confirmPassword,
+      });
   };
 
   useEffect(() => {

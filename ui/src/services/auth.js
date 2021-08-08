@@ -32,7 +32,7 @@ export const forgotUser = async (email) => {
   );
 };
 
-export const resetUser = async (user = _user) => {
+export const resetUser = async (user) => {
   return axios.post(
     `${process.env.REACT_APP_SERVER_DOMAIN}/auth/reset-password`,
     {

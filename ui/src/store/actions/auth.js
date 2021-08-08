@@ -146,8 +146,9 @@ export const forgotUser = (email) => {
 };
 
 export const resetUser = (user = _user) => {
+  const { token, password, confirmPassword } = user;
   return (dispatch) => {
-    resetUserService(user)
+    resetUserService({ token, password, confirmPassword })
       .then(({ data }) => {
         dispatch(resetUserSuccess(data));
         dispatch(snackbar(true, 'success', data.message));
