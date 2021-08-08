@@ -26,9 +26,14 @@ const App = () => {
         render={(props) => <Auth {...props} />}
       />
       <Route
-        path="/user/reset-password/"
+        path="/auth/reset-password/"
         location={{ hash: 'Reset' }}
         render={(props) => <Auth {...props} onReset={true} />}
+      />
+      <Route
+        path="/auth/verify-email/"
+        location={{ hash: 'Verify' }}
+        render={(props) => <Auth {...props} onVerify={true} />}
       />
       <ProtectedRoute
         exact

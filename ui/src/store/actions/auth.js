@@ -2,6 +2,7 @@ import { _user } from '../../models/interfaces/IAuth';
 import {
   registerUser as registerUserService,
   loginUser as loginUserService,
+  verifyUser as verifyUserService,
   forgotUser as forgotUserService,
   resetUser as resetUserService,
 } from '../../services/auth';
@@ -32,6 +33,20 @@ export const loginUserSuccess = (data) => {
 export const loginUserFail = (data) => {
   return {
     type: actionTypes.LOGIN_USER_FAIL,
+    data,
+  };
+};
+
+export const verifyUserSuccess = (data) => {
+  return {
+    type: actionTypes.VERIFY_USER_SUCCESS,
+    data,
+  };
+};
+
+export const verifyUserFail = (data) => {
+  return {
+    type: actionTypes.VERIFY_USER_FAIL,
     data,
   };
 };
@@ -72,10 +87,10 @@ export const registerUser = (user = _user) => {
         dispatch(snackbar(true, 'success', data.message));
       })
       .catch(({ response }) => {
-        const { error } = response.data;
+        const { message } = response.data;
 
-        dispatch(registerUserFail(error));
-        dispatch(snackbar(true, 'error', error));
+        dispatch(registerUserFail(message));
+        dispatch(snackbar(true, 'error', message));
       });
   };
 };
@@ -90,10 +105,26 @@ export const loginUser = (user = _user) => {
         dispatch(snackbar(true, 'success', 'You are logged in'));
       })
       .catch(({ response }) => {
-        const { error } = response.data;
+        const { message } = response.data;
 
-        dispatch(loginUserFail(error));
-        dispatch(snackbar(true, 'error', error));
+        dispatch(loginUserFail(message));
+        dispatch(snackbar(true, 'error', message));
+      });
+  };
+};
+
+export const verifyUser = (token) => {
+  return (dispatch) => {
+    verifyUserService(token)
+      .then(({ data }) => {
+        dispatch(verifyUserSuccess(data));
+        dispatch(snackbar(true, 'success', data.message));
+      })
+      .catch(({ response }) => {
+        const { message } = response.data;
+
+        dispatch(verifyUserFail(message));
+        dispatch(snackbar(true, 'error', message));
       });
   };
 };
@@ -106,10 +137,10 @@ export const forgotUser = (user = _user) => {
         dispatch(snackbar(true, 'success', data.message));
       })
       .catch(({ response }) => {
-        const { error } = response.data;
+        const { message } = response.data;
 
-        dispatch(forgotUserFail(error));
-        dispatch(snackbar(true, 'error', error));
+        dispatch(forgotUserFail(message));
+        dispatch(snackbar(true, 'error', message));
       });
   };
 };
@@ -122,9 +153,9 @@ export const resetUser = (user = _user) => {
         dispatch(snackbar(true, 'success', data.message));
       })
       .catch(({ response }) => {
-        const { error } = response.data;
-        dispatch(resetUserFail(error));
-        dispatch(snackbar(true, 'error', error));
+        const { message } = response.data;
+        dispatch(resetUserFail(message));
+        dispatch(snackbar(true, 'error', message));
       });
   };
 };

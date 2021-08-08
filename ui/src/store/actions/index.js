@@ -8,4 +8,10 @@ export {
   modal,
   snackbar,
 } from './term';
-export { registerUser, loginUser, forgotUser, resetUser } from './auth';
+export {
+  registerUser,
+  loginUser,
+  verifyUser,
+  forgotUser,
+  resetUser,
+} from './auth';
