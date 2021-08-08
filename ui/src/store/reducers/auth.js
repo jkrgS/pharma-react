@@ -31,6 +31,20 @@ const loginUserFail = (state, action) => {
   });
 };
 
+const verifyUserSuccess = (state, action) => {
+  const { message } = action;
+  return updateObject(state, {
+    auth: { verify: { message } },
+  });
+};
+
+const verifyUserFail = (state, action) => {
+  const { message } = action;
+  return updateObject(state, {
+    auth: { verify: { failed: true, message } },
+  });
+};
+
 const forgotUserSuccess = (state, action) => {
   return updateObject(state, {
     auth: { forgot: { message: action.message } },
@@ -65,6 +79,10 @@ const reducer = (state = initialState, action) => {
       return loginUserSuccess(state, action);
     case actionTypes.LOGIN_USER_FAIL:
       return loginUserFail(state, action);
+    case actionTypes.VERIFY_USER_SUCCESS:
+      return verifyUserSuccess(state, action);
+    case actionTypes.VERIFY_USER_FAIL:
+      return verifyUserFail(state, action);
     case actionTypes.FORGOT_USER_SUCCESS:
       return forgotUserSuccess(state, action);
     case actionTypes.FORGOT_USER_FAIL:

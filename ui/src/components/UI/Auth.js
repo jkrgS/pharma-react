@@ -57,9 +57,11 @@ const useStyles = makeStyles((theme) => ({
 const Auth = ({
   onRegisterUser,
   onLoginUser,
+  onVerifyUser,
   onForgotUser,
   onResetUser,
   onReset,
+  onVerify,
   auth,
   ...props
 }) => {
@@ -79,7 +81,10 @@ const Auth = ({
   const { Copyright, LoginFields, RegisterFields, ForgotFields, ResetFields } =
     forms;
   const { location } = props;
-  const resetToken = new URLSearchParams(location.search).get('token');
+  const resetToken =
+    location.pathname === '/auth/reset-password'
+      ? new URLSearchParams(location.search).get('token')
+      : undefined;
 
   const handleFieldChange = (event) => {
     const id = event.target.id;
@@ -98,11 +103,18 @@ const Auth = ({
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && !auth?.auth?.forgot) history.push('/home');
-    if (onReset) setAuthStatus('Reset');
     if (auth?.auth?.reset && !auth?.auth?.reset?.failed)
       setAuthStatus('Sign in');
     if (resetToken) form.token = resetToken;
-  }, [auth, form, history, onReset, resetToken]);
+  }, [auth, form, history, resetToken]);
+
+  useEffect(() => {
+    if (onReset) setAuthStatus('Reset');
+    if (onVerify) {
+      const verifyToken = new URLSearchParams(location.search).get('token');
+      onVerifyUser(verifyToken);
+    }
+  }, [location.search, onReset, onVerify, onVerifyUser]);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -188,6 +200,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onRegisterUser: (user = _user) => dispatch(actions.registerUser(user)),
     onLoginUser: (user = _user) => dispatch(actions.loginUser(user)),
+    onVerifyUser: (token) => dispatch(actions.verifyUser(token)),
     onForgotUser: (user = _user) => dispatch(actions.forgotUser(user)),
     onResetUser: (user = _user) => dispatch(actions.resetUser(user)),
   };
