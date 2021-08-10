@@ -91,18 +91,12 @@ paths:
             schema:
               type: object
               properties:
-                key:
-                  type: string
-                  example: "CHEBI:18320"
                 label:
                   type: string
                   example: "dithiothreitol"
                 synonyms:
                   type: string
                   example: "Del(14)(q12), 14q12 microdeletion syndrome"
-                obo_id:
-                  type: string
-                  example: "1,4-dithiothreitol"
                 term_editor:
                   type: string
                   example: "Laura Harris"

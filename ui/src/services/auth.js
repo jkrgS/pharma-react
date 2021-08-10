@@ -14,7 +14,6 @@ export const loginUser = async (user = _user) => {
 };
 
 export const verifyUser = async (token) => {
-  console.log({ token });
   return axios.post(
     `${process.env.REACT_APP_SERVER_DOMAIN}/auth/verify-email`,
     {

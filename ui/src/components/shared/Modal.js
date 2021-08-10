@@ -62,6 +62,7 @@ const FormDialog = ({
               label: modalTerm?.label,
               synonyms: modalTerm?.synonyms,
               term_editor: modalTerm?.term_editor,
+              has_children: modalTerm?.has_children,
             }
           : {
               has_children: false,

@@ -19,13 +19,13 @@ export const createTerm = async (term = _term) => {
 
 export const editTerm = async (term = _term) => {
   return await axios.put(
-    `${process.env.REACT_APP_SERVER_DOMAIN}/api/editTerm`,
+    `${process.env.REACT_APP_SERVER_DOMAIN}/api/term/${term.key}`,
     { term }
   );
 };
 
 export const deleteTerm = async (term = _term) => {
   return await axios.delete(
-    `${process.env.REACT_APP_SERVER_DOMAIN}/api/deleteTerm/${term.key}`
+    `${process.env.REACT_APP_SERVER_DOMAIN}/api/term/${term.key}`
   );
 };

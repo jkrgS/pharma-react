@@ -158,44 +158,62 @@ const ResetFields = ({ onChange }) => (
   </>
 );
 
-const EditTermFields = ({ onChange, term }) => (
-  <>
-    <TextField
-      variant="outlined"
-      margin="normal"
-      required
-      fullWidth
-      id="label"
-      label="Name"
-      name="name"
-      value={term?.label || ''}
-      onChange={(e) => onChange(e)}
-      autoFocus
-    />
-    <TextField
-      variant="outlined"
-      margin="normal"
-      required
-      fullWidth
-      multiline
-      id="synonyms"
-      label="Synonyms"
-      name="synonyms"
-      value={term?.synonyms || ''}
-      onChange={(e) => onChange(e)}
-    />
-    <TextField
-      variant="outlined"
-      margin="normal"
-      fullWidth
-      id="term_editor"
-      label="Editor"
-      name="term_editor"
-      value={term?.term_editor || ''}
-      onChange={(e) => onChange(e)}
-    />
-  </>
-);
+const EditTermFields = ({ onChange, term }) => {
+  return (
+    <>
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        id="label"
+        label="Name"
+        name="name"
+        value={term?.label || ''}
+        onChange={(e) => onChange(e)}
+        autoFocus
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        required
+        fullWidth
+        multiline
+        id="synonyms"
+        label="Synonyms"
+        name="synonyms"
+        value={term?.synonyms || ''}
+        onChange={(e) => onChange(e)}
+      />
+      <TextField
+        variant="outlined"
+        margin="normal"
+        fullWidth
+        id="term_editor"
+        label="Editor"
+        name="term_editor"
+        value={term?.term_editor || ''}
+        onChange={(e) => onChange(e)}
+      />
+      <FormControlLabel
+        control={
+          <Switch
+            style={{ marginLeft: '1rem' }}
+            checkedChildren={<CheckOutlined />}
+            unCheckedChildren={<CloseOutlined />}
+            defaultChecked={false}
+          />
+        }
+        label="Has children"
+        labelPlacement="start"
+        style={{ marginLeft: 0 }}
+        onChange={(e) => onChange({ switch: e })}
+        checked={term?.has_children || false}
+        id="has_children"
+      />
+    </>
+  );
+};
 
 const CreateTermFields = ({ onChange }) => (
   <>
