@@ -18,9 +18,10 @@ export const createTerm = async (term = _term) => {
 };
 
 export const editTerm = async (term = _term) => {
+  const { key, obo_id, ...termData } = term;
   return await axios.put(
-    `${process.env.REACT_APP_SERVER_DOMAIN}/api/term/${term.key}`,
-    { term }
+    `${process.env.REACT_APP_SERVER_DOMAIN}/api/term/${key}`,
+    { term: termData }
   );
 };
 
