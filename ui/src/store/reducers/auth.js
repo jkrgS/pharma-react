@@ -19,7 +19,7 @@ const registerUserFail = (state, action) => {
 };
 
 const loginUserSuccess = (state, action) => {
-  localStorage.setItem('token', action?.data?.jwtToken);
+  localStorage.setItem('token', action?.data?.token);
   return updateObject(state, {
     auth: { login: { email: action?.data?.email, token: action?.data?.token } },
   });
