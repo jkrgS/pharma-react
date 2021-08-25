@@ -1,6 +1,9 @@
 {
   "name": "ui",
   "version": "0.1.0",
+  "engines": {
+    "yarn": "1.22.10"
+  },
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.3.0",
@@ -12,7 +15,6 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.10.0",
     "axios": "^0.21.1",
-    "dotenv": "^9.0.1",
     "highcharts": "^9.1.2",
     "highcharts-react-official": "^3.0.0",
     "node-sass": "4.14.1",
@@ -29,7 +31,8 @@
   },
   "scripts": {
     "install-deps": "yarn install",
-    "start": "PORT=3100 react-scripts -r dotenv/config start",
+    "start": "react-scripts start",
+    "start_dev": "PORT=3100 react-scripts -r dotenv/config start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -56,6 +59,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "dotenv": "^10.0.0",
     "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^7.1.0",

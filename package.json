@@ -17,6 +17,7 @@
     "start": "yarn ui-start",
     "ui-install-deps": "yarn workspace ui install-deps",
     "ui-start": "yarn workspace ui start",
+    "ui-start-dev": "yarn workspace ui start_dev",
     "ui-prettier-fix": "yarn workspace ui prettier:fix",
     "ui-prettier-format": "yarn workspace ui prettier:format"
   },
