@@ -1,6 +1,9 @@
 {
   "name": "pharma-react",
   "version": "1.0.0",
+  "engines": {
+    "yarn": "1.22.10"
+  },
   "description": "react project",
   "main": "index.js",
   "repository": "git@github.com:jkrgS/pharma-react.git",
@@ -11,6 +14,7 @@
     "ui"
   ],
   "scripts": {
+    "start": "yarn ui-start",
     "ui-install-deps": "yarn workspace ui install-deps",
     "ui-start": "yarn workspace ui start",
     "ui-prettier-fix": "yarn workspace ui prettier:fix",
