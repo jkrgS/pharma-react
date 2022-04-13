@@ -4,7 +4,6 @@ export const _user = {
   email: '',
   password: '',
   confirmPassword: '',
-  acceptTerms: true,
 };
 
 export const _registerUser = {

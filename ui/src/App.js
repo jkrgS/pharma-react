@@ -1,13 +1,8 @@
 import React, { Suspense } from 'react';
-import {
-  Route,
-  Switch,
-  withRouter,
-  Redirect,
-  BrowserRouter,
-} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Snack from './components/shared/Snack';
 import ProtectedRoute from './components/UI/ProtectedRoute';
+import Layout from './components/UI/Layout';
 
 const Home = React.lazy(() => {
   return import('./containers/home.js');
@@ -18,40 +13,47 @@ const Auth = React.lazy(() => {
 
 const App = () => {
   const routes = (
-    <Switch>
+    <Routes>
       <Route
         exact
         path="/authentication"
         location={{ hash: 'Auth' }}
-        render={(props) => <Auth {...props} />}
+        element={<Auth />}
       />
       <Route
         path="/auth/reset-password/"
         location={{ hash: 'Reset' }}
-        render={(props) => <Auth {...props} onReset={true} />}
+        element={<Auth onReset={true} />}
       />
       <Route
         path="/auth/verify-email/"
         location={{ hash: 'Verify' }}
-        render={(props) => <Auth {...props} onVerify={true} />}
+        element={<Auth onVerify={true} />}
       />
-      <ProtectedRoute
+      <Route
         exact
         path="/home"
         location={{ hash: 'Home' }}
-        component={Home}
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Home />
+            </Layout>
+          </ProtectedRoute>
+        }
       />
-      <Redirect to="/home" />
-    </Switch>
+      {/* <Link to="/home" /> */}
+      {/* <Route index element={<Home />} /> */}
+    </Routes>
   );
   return (
-    <BrowserRouter>
+    <>
       <Suspense fallback={<p>Loading...</p>}>{routes}</Suspense>
       <Suspense>
         <Snack />
       </Suspense>
-    </BrowserRouter>
+    </>
   );
 };
 
-export default withRouter(App);
+export default App;

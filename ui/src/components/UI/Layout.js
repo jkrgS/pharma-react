@@ -9,7 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +36,7 @@ const LayoutNav = ({ children }) => {
   const [auth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const history = useHistory();
+  const history = useLocation();
 
   const handleLogout = (event) => {
     localStorage.removeItem('token');

@@ -105,6 +105,7 @@ export const loginUser = (user = _user) => {
         dispatch(snackbar(true, 'success', 'You are logged in'));
       })
       .catch(({ response }) => {
+        console.log({ response });
         const { message } = response.data;
 
         dispatch(loginUserFail(message));

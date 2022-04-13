@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -63,10 +63,9 @@ const Auth = ({
   onReset,
   onVerify,
   auth,
-  ...props
 }) => {
   const classes = useStyles();
-  const history = useHistory();
+  const history = useLocation();
   const form = useMemo(
     () => ({
       firstName: '',
@@ -80,10 +79,9 @@ const Auth = ({
   const [authStatus, setAuthStatus] = useState('Sign in');
   const { Copyright, LoginFields, RegisterFields, ForgotFields, ResetFields } =
     forms;
-  const { location } = props;
   const resetToken =
-    location.pathname === '/auth/reset-password'
-      ? new URLSearchParams(location.search).get('token')
+    history.pathname === '/auth/reset-password'
+      ? new URLSearchParams(history.search).get('token')
       : undefined;
 
   const handleFieldChange = (event) => {
@@ -116,10 +114,10 @@ const Auth = ({
   useEffect(() => {
     if (onReset) setAuthStatus('Reset');
     if (onVerify) {
-      const verifyToken = new URLSearchParams(location.search).get('token');
+      const verifyToken = new URLSearchParams(history.search).get('token');
       onVerifyUser(verifyToken);
     }
-  }, [location.search, onReset, onVerify, onVerifyUser]);
+  }, [history.search, onReset, onVerify, onVerifyUser]);
 
   return (
     <Grid container component="main" className={classes.root}>

@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import Layout from './Layout';
+import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRoute = ({ component: Component, ...restOfProps }) => {
+const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('token')
   );
+  const location = useLocation();
 
   useEffect(() => setIsAuthenticated(localStorage.getItem('token')), []);
 
-  return (
-    <Route
-      {...restOfProps}
-      render={(props) =>
-        isAuthenticated ? (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        ) : (
-          <Redirect to="/authentication" />
-        )
-      }
-    />
+  return isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/authentication" state={{ from: location }} />
   );
 };
 
